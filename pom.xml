@@ -20,15 +20,16 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--Spark java.lang.NoClassDefFoundError: org/codehaus/janino/InternalCompilerException-->
             <dependency>
                 <groupId>org.codehaus.janino</groupId>
-                <artifactId>jasino</artifactId>
-                <version>3.0.16</version>
+                <artifactId>commons-compiler</artifactId>
+                <version>3.0.8</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.janino</groupId>
-                <artifactId>commons.compiler</artifactId>
-                <version>3.0.16</version>
+                <artifactId>janino</artifactId>
+                <version>3.0.8</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -36,6 +37,17 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>commons-compiler</artifactId>
+            <version>3.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+            <version>3.0.8</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>

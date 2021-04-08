@@ -7,6 +7,7 @@ import org.reflections.Reflections;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.beans.Introspector;
 import java.lang.reflect.Proxy;
@@ -26,7 +27,7 @@ public class SparkDataApplicationContextInitializer implements ApplicationContex
             Object crang = Proxy.newProxyInstance(
                     sparkRepositoryInterface.getClassLoader()
                     , new Class[]{sparkRepositoryInterface}
-                    , ih);
+                    , factory.create(sparkRepositoryInterface));
             context
                     .getBeanFactory()
                     .registerSingleton(Introspector.decapitalize(sparkRepositoryInterface.getSimpleName()), crang);

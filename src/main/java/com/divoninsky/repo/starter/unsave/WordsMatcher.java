@@ -1,5 +1,6 @@
 package com.divoninsky.repo.starter.unsave;
 
+import java.beans.Introspector;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -22,10 +23,10 @@ public class WordsMatcher {
             remainingOptions.removeIf(option -> !option.toLowerCase(Locale.ROOT).startsWith(match.toString().toLowerCase(Locale.ROOT)));
         }
 
-        while (remainingOptions.get(0).equalsIgnoreCase(match.toString())){
+        while (!remainingOptions.get(0).equalsIgnoreCase(match.toString())){
             match.append(pieces.remove(0));
         }
 
-        return match.toString();
+        return Introspector.decapitalize(match.toString());
     }
 }

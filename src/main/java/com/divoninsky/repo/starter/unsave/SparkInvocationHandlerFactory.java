@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
+import scala.Tuple2;
 
+import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -29,13 +31,13 @@ public class SparkInvocationHandlerFactory {
         String pathToData = modelClass.getAnnotation(Source.class).value();
         DataExtractor dataExtractor = extractorResolver.resolve(pathToData);
 
-        Map<Method, List<SparkTransformation>> transformationChain = new HashMap<>();
+        Map<Method, List<Tuple2<SparkTransformation, List<String>>>> transformationChain = new HashMap<>();
         Map<Method, Finalizer> method2Finalizer = new HashMap<>();
 
         Method[] methods = repoInterface.getMethods();
         for (Method method : methods) {
             TransformationSpider currentSpider = null;
-            List<SparkTransformation> transformations = new ArrayList<>();
+            List<Tuple2<SparkTransformation, List<String>>> transformations = new ArrayList<>();
             List<String> methodWords = new ArrayList(Arrays.asList(method.getName().split("(?=\\p{Upper})")));
 
             while (methodWords.size() > 1){
@@ -43,15 +45,15 @@ public class SparkInvocationHandlerFactory {
                 if (!strategyName.isEmpty()){
                     currentSpider = spiderMap.get(strategyName);
                 }
-                transformations.add(currentSpider.createTransformation(methodWords));
+                transformations.add(currentSpider.createTransformation(methodWords, fieldNames));
             }
 
             String finalizerName = "collect";
             if (methodWords.size() == 1){
-                finalizerName = methodWords.get(0);
+                finalizerName = Introspector.decapitalize(methodWords.get(0));
             }
             transformationChain.put(method, transformations);
-            method2Finalizer.put(method, method2Finalizer.get(finalizerName));
+            method2Finalizer.put(method, finalizerMap.get(finalizerName));
         }
 
         return SparkInvocationHandlerImpl.builder()

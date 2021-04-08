@@ -12,12 +12,10 @@ import java.util.List;
 public class BetweenFilter implements FilterTransformation {
 
     @Override
-    public Dataset<Row> transform(Dataset<Row> dataset, List<String> fieldNames, List<Object> args) {
-        dataset
+    public Dataset<Row> transform(Dataset<Row> dataset, List<String> fieldNames, OrderedBag<Object> args) {
+        return dataset
                 .filter(functions
                         .col(fieldNames.get(0))
-                        .between(args.get(0), args.get(1)))
-
-        return null;
+                        .between(args.takeAndRemove(), args.takeAndRemove()));
     }
 }
