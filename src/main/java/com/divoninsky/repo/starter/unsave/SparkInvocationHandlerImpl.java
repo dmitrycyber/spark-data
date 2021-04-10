@@ -30,7 +30,7 @@ public class SparkInvocationHandlerImpl implements SparkInvocationHandler {
         for (Tuple2<SparkTransformation, List<String>> tuple : tuple2List) {
             SparkTransformation sparkTransformation = tuple._1;
             List<String> fieldNames = tuple._2;
-            sparkTransformation.transform(dataset, fieldNames, orderedBag);
+            dataset = sparkTransformation.transform(dataset, fieldNames, orderedBag);
         }
 
         Finalizer finalizer = finalizerMap.get(method);

@@ -20,5 +20,14 @@ public class SpringDataBuilderApplication {
         for (Criminal criminal : criminals) {
             System.out.println("criminal = " + criminal);
         }
+        System.out.println();
+        System.out.println("-------------------");
+        System.out.println();
+
+        List<Criminal> byNumberGreaterThan = criminalRepository.findByNumberGreaterThan(20);
+
+        for (Criminal criminal : byNumberGreaterThan) {
+            System.out.println("greater = " + criminal);
+        }
     }
 }
